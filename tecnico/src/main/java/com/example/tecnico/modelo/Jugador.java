@@ -1,27 +1,49 @@
 package com.example.tecnico.modelo;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "jugadores")
 public class Jugador {
 
     @Id
-    @SequenceGenerator(name = "jugador_sequence", sequenceName = "jugador_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jugador_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nombre;
-    private String clubFavorito;
+    private String equipo;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "tecnico_id")
+    @JsonIgnore
     private Tecnico tecnico;
 
     public Jugador() {
+
+    }
+
+    public Jugador(String nombre, String equipo, Tecnico tecnico) {
+        this.nombre = nombre;
+        this.equipo = equipo;
+        this.tecnico = tecnico;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -32,11 +54,19 @@ public class Jugador {
         this.nombre = nombre;
     }
 
-    public String getClubFavorito() {
-        return clubFavorito;
+    public String getEquipo() {
+        return equipo;
     }
 
-    public void setClubFavorito(String clubFavorito) {
-        this.clubFavorito = clubFavorito;
+    public void setEquipo(String equipo) {
+        this.equipo = equipo;
+    }
+
+    public Tecnico getTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(Tecnico tecnico) {
+        this.tecnico = tecnico;
     }
 }
